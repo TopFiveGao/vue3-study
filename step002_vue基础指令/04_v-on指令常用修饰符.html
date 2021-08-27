@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        .btnBase {
+            background-color: #42b983;
+        }
+
+        .bg {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root">
+    <div :class="{bg: bgToggle}" @click="box">
+        {{msg}}
+        <br>
+        <button @click="btn" :class="{btnBase:true}">btn</button>
+        <br>
+        <!--   @action .stop修饰符会阻止事件冒泡传递     -->
+        <button @click.stop="btnStop" :style="{fontSize:f40}">btnStop</button>
+        <!--   @action .prevent修饰符会阻止表单提交等默认事件     -->
+        <form action="https://www.baidu.com">
+            <input type="submit" value="submit" @click="doSubmit">
+        </form>
+        <form action="https://www.baidu.com">
+            <input type="submit" value="submit" @click.prevent="doSubmit1">
+        </form>
+        <a href="https://www.jd.com" @click.prevent="baidu">JDDDDDDDD</a>
+        <!--   @action .once修饰符会使事件只响应一次     -->
+
+        <button @click.once="once">check</button>
+    </div>
+</div>
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                msg: "我是vue对象提供的数据！",
+                btnBase: 'btnBase',
+                bg: "bg",
+                bgToggle: false,
+                f40: '40px'
+            }
+        },
+        methods: {
+            btn(event) {
+                event.stopPropagation() //等价于vue的.stop
+                console.log("click btn")
+            },
+            btnStop() {
+                console.log("click btnStop")
+            },
+            box() {
+                console.log("click box")
+            },
+            doSubmit(event) {
+                event.preventDefault() //等价于vue的.prevent
+                console.log('event prevent default')
+            },
+            doSubmit1() {
+                console.log('.prevent default')
+            },
+            baidu() {
+                console.log("click baidu")
+            },
+            once() {
+                console.log("just once")
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+</body>
+</html>

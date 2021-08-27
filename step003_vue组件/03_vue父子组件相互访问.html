@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+<body>
+<!--
+父子组件之间相互访问
+(
+web组件架构一般是父组件中放入多个子组件构成页面，所以父组件是公共部分，一般不提倡通过子组件修改父组件的任何数据。
+)
+1.父组件访问子组件对象：$refs （父组件是不能通过this.$refs.xx修改子组件数据的。）
+2.子组件访问父组件对象：$parent 或 $root
+-->
+<div id="root" style="background-color: #6d3960; width: 300px;height: 300px;">
+    <div @click="parentClick">
+        {{msg}}
+        <cpn-box ref="inner" :msg="'继承自：'+msg" @son-func="sonFunc"></cpn-box>
+    </div>
+</div>
+<template id="box">
+    <div style="background-color: #42b983; width: 200px;height: 200px;" @click.stop="sonClick">{{msg}}</div>
+</template>
+<script>
+    const box = {
+        template: '#box',
+        props: {
+            msg: {type: String, required: true, default: '盒子组件消息的默认值'}
+        },
+        methods: {
+            sonClick() {
+                console.log("this is belong to son function")
+                this.$emit('sonFunc', true)
+            }
+        }
+    }
+    const app = Vue.createApp({
+        data() {
+            return {
+                msg: "父组件的消息"
+            }
+        },
+        components: {
+            'cpn-box': box
+        },
+        methods:{
+            parentClick() {
+                console.log(this.$refs.inner.msg)
+                this.$refs.inner.msg = 123
+            },
+            sonFunc(flag){
+                console.log(flag)
+            }
+        }
+    }).mount('#root')
+</script>
+
+</body>
+</html>

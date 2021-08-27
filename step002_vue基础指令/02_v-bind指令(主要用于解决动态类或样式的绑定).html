@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="root" v-cloak>
+    {{msg}}
+    <div :style="faded">{{msg}}</div>
+</div>
+<script>
+    const app = Vue.createApp({
+        data(){
+            return {
+                msg: "中文是世界上最好的文字",
+                faded:"color:red;"
+            }
+        }
+    }).mount("#root")
+
+</script>
+</body>
+</html>

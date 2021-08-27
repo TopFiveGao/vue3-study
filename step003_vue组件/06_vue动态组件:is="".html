@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+<body>
+<!--
+业务场景：通过一个按钮点击事件，切换展示的组件。
+常见错误思路：
+想通过动态改变组件的template的id或者是动态改变组件的对象来实现，但实际上，在组件对象template中，
+一方面id是不能通过this.获取的，另一方面就算动态改变了注册的template配置对象，但这种改变vue对象是不会对这种改变
+作出响应的（可能会有一个方法来通知vue对象其template配置对象改变了需要重新渲染网页），所以回到最初vue的基础使用，
+用v-if或者v-show去控制，且不能够直接在组件上使用v-show，需在组件外套一个div标签去使用
+（<div v-show="false"> <mycpn> </mycpn> </div>）
+-->
+<div id="root"></div>
+<template id="cpn1">
+    <p>----------------------CPN-START----------------------</p>
+    {{main}}
+    <p>----------------------CPN-END----------------------</p>
+</template>
+<template id="cpn2">
+    <p>----------------------CPN input-START----------------------</p>
+    <input type="text" :placeholder="main"/>
+    <p>----------------------CPN input-END----------------------</p>
+</template>
+
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                msg: "我是vue对象提供的数据！",
+                main: "我是爹",
+                citem: 'box1',
+                flag: true
+            }
+        },
+        template: `
+          <div>
+          <div v-show="citem === 'box1'">
+            <box1></box1>
+          </div>
+
+          <div v-show="citem === 'box2'">
+            <box2></box2>
+          </div>
+          <button @click="toggle">触电</button>
+          <br>
+          <br>
+          <br>
+          // 此处:is= 的值不能调用方法，因为他会一直调用，可以使用计算属性。
+          <keep-alive>
+            <component :is="isCpn"></component>
+          </keep-alive>
+          <button @click="isflg">click</button>
+          </div>
+        `,
+        methods: {
+            toggle() {
+                this.citem = this.citem === 'box1' ? 'box2' : 'box1'
+                console.log('click...', this.citem)
+            },
+            isflg() {
+                this.flag = !this.flag
+                console.log('func', this.flag)
+                return this.flag ? 'box1' : 'box2'
+            }
+
+        },
+        computed:{
+            isCpn() {
+                return this.flag ? 'box1' : 'box2'
+            }
+        }
+
+    }
+    // 创建vue实例对象
+    let app = Vue.createApp(obj)
+    app.component('box1', {
+        template: `
+          <p>----------------------CPN-START----------------------</p>
+          {{main}}
+          <p>----------------------CPN-END----------------------</p>
+        `,
+        data() {
+            return {
+                main: "组件box1"
+            }
+        }
+    })
+    app.component('box2', {
+        template: '#cpn2',
+        data() {
+            return {
+                main: "组件box2"
+            }
+        }
+    })
+    app = app.mount("#root")
+</script>
+
+</body>
+</html>

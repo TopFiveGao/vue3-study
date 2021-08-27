@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+
+</head>
+<body>
+
+<div id="root">
+    <div>
+        {{show()}}
+        <br>
+        {{compute}}
+    </div>
+</div>
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                msg: "我是vue对象提供的数据！",
+                val1: 90,
+                val2: 10
+            }
+        },
+        methods: {
+            show() {
+                return this.val1 + this.val2
+            }
+        },
+        computed: {
+            compute() {
+                /*
+                * 计算属性原理在get和set，它和函数求值的区别在于当变量值被多次使用时，它不会重复计算，消耗性能。
+                * set(val){
+                *   this.xx = val
+                * }
+                * get(){
+                *   return this.xx
+                * }
+                * */
+                return this.val1 + this.val2
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+</body>
+</html>

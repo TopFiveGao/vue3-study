@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+
+        .box1 {
+            width: 300px;
+            height: 300px;
+            background-color: #42b983;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 3s ease-in;
+        }
+
+        .box2 {
+            width: 300px;
+            height: 300px;
+            background-color: #4268b9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 3s ease-in;
+            animation: ease-out all 4s infinite;
+        }
+
+        .box3 {
+            width: 300px;
+            height: 300px;
+            background-color: #b9a542;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 3s ease-in;
+        }
+
+        .box1:hover {
+            width: 600px;
+            height: 600px;
+            background-color: red;
+        }
+
+        /*.box2:hover {*/
+        /*    width: 600px;*/
+        /*    height: 600px;*/
+        /*    background-color: red;*/
+        /*}*/
+
+        .box3:hover {
+            width: 600px;
+            height: 600px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<template id="fuck">
+    <div>{{text}}</div>
+</template>
+
+<body>
+
+<div id="root">
+    <!--  css搭配transition实现动画效果  -->
+    <fuck :class="box1"></fuck>
+    <fuck :class="box2"></fuck>
+    <fuck :class="box3"></fuck>
+</div>
+
+<script>
+    // 创建vue实例的全局配置对象
+    const Parent = {
+        data() {
+            return {
+                box1: 'box1',
+                box2: 'box2',
+                box3: 'box3'
+            }
+        }
+    }
+    const Fuck = {
+        template: '#fuck',
+        data() {
+            return {
+                text: "LOGO"
+            }
+        }
+    }
+    // 创建vue实例对象
+    let app = Vue.createApp(Parent)
+    app.component('fuck', Fuck)
+    app = app.mount("#root")
+</script>
+
+</body>
+</html>

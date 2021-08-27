@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+<body>
+<!--
+watch是computed的底层实现。
+-->
+<div id="root">
+    <h1>{{price}}</h1>
+    <h1>{{vipPrice}}</h1>
+</div>
+<script>
+    // 创建vue实例的全局配置对象
+    const OBJ = {
+        data() {
+            return {
+                price: 100,
+                vipPrice: 80
+            }
+        },
+        watch: {
+            price(cur, pre) {
+                console.log('cur price:', cur, ' pre price:', pre)
+                this.vipPrice = this.price * 0.8
+            }
+        }
+
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(OBJ).mount("#root")
+</script>
+
+</body>
+</html>

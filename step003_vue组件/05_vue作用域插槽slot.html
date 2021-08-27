@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+<body>
+<!--
+插槽使组件的展示结构变得更为灵活多变，即使这样，但总有一些你从没见过的业务场景及需求，比如要求【父组件】获取插槽中的数据进行重新定制或更改。
+-->
+
+<div id="root">
+    <box>
+        <template v-slot:header>
+            <header>默认头部</header>
+        </template>
+        <template v-slot:main="slotInner">
+            <header>{{main + slotInner.fuck.split(' ')[1]}}</header>
+        </template>
+        <template v-slot:footer>
+            <header>默认尾部</header>
+        </template>
+        <template v-slot:default> I am unnamed slot</template>
+    </box>
+    <br><br><br>
+    <box>
+        <template v-slot:header>
+            <header>JD头部</header>
+        </template>
+        <template v-slot:main>
+            <header>JD主体</header>
+        </template>
+        <template v-slot:footer>
+            <header>JD尾部</header>
+        </template>
+        <template v-slot> I am default slot</template>
+    </box>
+    <br><br><br>
+    <box></box>
+</div>
+<template id="cpn">
+    <p>----------------------CPN-START----------------------</p>
+    <slot name="header">默认头部</slot>
+    <!--  在组件定义的插槽中为插槽绑定一个属性值（通常是:data='sonProp'，也可自定义:fuck='sonProp'），再在组件插槽使用时在template标签中通过v-slot:插槽名="xxx"实现【父组件】获取插槽数据，xxx.data或xxx.fuck即是sonProp这个子组件插槽中的属性值.   -->
+    <slot name="main" :fuck="main">{{main}}</slot>
+    <slot name="footer">默认尾部</slot>
+    <slot>默认slot</slot>
+    <p>----------------------CPN-END----------------------</p>
+</template>
+<script>
+    const Cpn = {
+        template: '#cpn',
+        data() {
+            return {
+                main: "main content"
+            }
+        }
+    }
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                msg: "我是vue对象提供的数据！",
+                main: "我是爹"
+            }
+        },
+        components: {
+            'box': Cpn
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+
+</body>
+</html>

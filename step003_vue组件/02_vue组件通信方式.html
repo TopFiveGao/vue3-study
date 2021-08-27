@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+<body>
+<!--
+组件通信常用方式：
+1. (父传子)props：在【子组件对象】内声明所有的 props，并在【子组件标签上】通过对props中声明的变量进行绑定(:xxprop="variable【该变量来自于父组件对象】")，即可实现由父组件向子组件传入数据。
+2. (子传父)自定义事件： 在【子组件对象】内定义好事件函数，通过该事件函数向父组件发送自定义事件指令[this.$emit("diyEvent", obj【该对象或数据来自于子组件对象】)]，然后在子组件标签上对自定义事件进行绑定(@diy-event="parentFunc[该函数来自于父组件，可接收来自子组件对象的数据]"),最后即可在父组件对象的methods中通过parentFunc函数来接收来自子组件对象的数据。
+3. 消息订阅与发布
+4. vuex
+
+实践领悟：
+无论是父传子或是子传父，都可理解为在最上层对象(即子组件对象)上做文章，绑定属性即可实现父传子通信(用props在子组件对象中声明)，绑定事件一般用作子传父通信(在子组件的响应事件函数中通过this.$emit("diyevent","子组件的数据")向父组件发送自定义事件的名称及事件包含的数据，最后在【父组件对象中定义一个事件处理函数】绑定至先前声明的自定义事件名【到子组件标签】即可)
+-->
+<div id="root" style="background-color: #6d3960; width: 300px;height: 300px;">
+    <div @click="parentClick">
+        {{msg}}
+        <cpn-box :msg="'继承自：'+msg" @son-func="sonFunc"></cpn-box>
+    </div>
+</div>
+<template id="box">
+    <div style="background-color: #42b983; width: 200px;height: 200px;" @click.stop="sonClick">{{msg}}</div>
+</template>
+<script>
+    const box = {
+        template: '#box',
+        props: {
+            msg: {type: String, required: true, default: '盒子组件消息的默认值'}
+        },
+        methods: {
+            sonClick() {
+                console.log(this)
+                this.$emit('sonFunc', { name: "GJP", age: 18}, true)
+            }
+        }
+    }
+    const app = Vue.createApp({
+        data() {
+            return {
+                msg: "父组件的消息"
+            }
+        },
+        components: {
+            'cpn-box': box
+        },
+        methods:{
+            parentClick() {
+                console.log(this)
+            },
+            sonFunc(obj, flag){
+                console.log(obj, flag)
+            }
+        }
+    }).mount('#root')
+</script>
+
+</body>
+</html>

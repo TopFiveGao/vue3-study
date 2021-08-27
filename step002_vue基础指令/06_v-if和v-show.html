@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+</head>
+<body>
+
+<div id="root">
+    <!--    v-if会根据服务端传的值(true/false)去决定是否创建html标签节点，v-show则是根据值去控制是否显示html标签节点-->
+    <div v-if="selected">
+        {{if_msg}}
+    </div>
+    <div v-else>
+        {{else_msg}}
+    </div>
+    <div v-show="isShow">
+        {{show_msg}}
+    </div>
+</div>
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                show_msg: "showMsg's value equals to true.",
+                if_msg: "v-if's value equals to true.",
+                else_msg: "v-if's value equals to false.",
+                selected: true,
+                isShow: true,
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+</body>
+</html>

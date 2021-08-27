@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+<body>
+<!--
+组件可以理解为是html网页的一层抽象封装，它优化了网页中标签复用(div)的问题；
+既然发明了组件对网页进行抽象，根据屠龙勇士终成恶龙的谚语可知，当组件被广泛使用时，那组件就成了新一代的网页，为了优化组件的使用，插槽(slot)顺应而生。
+使用理解：
+组件是网页标签模块的抽象，其抽象主要体现在网页标签中内容数据的动态展示；
+插槽是组件内部结构的抽象，其抽象主要体现在组件结构的动态展示。
+-->
+
+<div id="root">
+    <box>
+        <template v-slot:header>
+            <header>默认头部</header>
+        </template>
+        <template v-slot:main>
+            <header>默认主体</header>
+        </template>
+        <template v-slot:footer>
+            <header>默认尾部</header>
+        </template>
+        <template v-slot:default> I am unnamed slot</template>
+    </box>
+    <br><br><br>
+    <box>
+        <template v-slot:header>
+            <header>JD头部</header>
+        </template>
+        <template v-slot:main>
+            <header>JD主体</header>
+        </template>
+        <template v-slot:footer>
+            <header>JD尾部</header>
+        </template>
+        <template v-slot> I am default slot</template>
+    </box>
+    <br><br><br>
+    <box></box>
+</div>
+<template id="cpn">
+    <p>----------------------CPN-START----------------------</p>
+    <slot name="header">默认头部</slot>
+    <slot name="main">默认主体</slot>
+    <slot name="footer">默认尾部</slot>
+    <slot>默认slot</slot>
+    <p>----------------------CPN-END----------------------</p>
+</template>
+<script>
+    const Cpn = {
+        template:'#cpn'
+    }
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                msg: "我是vue对象提供的数据！"
+            }
+        },
+        components:{
+            'box':Cpn
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+
+</body>
+</html>

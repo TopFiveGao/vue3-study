@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        ul li {
+            list-style: none;
+            line-height: 30px;
+
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<div id="root">
+    <ul>
+        <li v-for="(i,index) in arr">{{i}}----------{{index}}</li>
+    </ul>
+    <hr>
+    <ul>
+        <li v-for="(val,key,index) in obj">{{key}}:{{val}}=={{index}}</li>
+    </ul>
+    <hr>
+    <ul>
+        <li v-for="(val,key) in obj">{{val}} {{key}}</li>
+    </ul>
+    <hr>
+    <h1>搜索列表</h1>
+    <label><input type="text" placeholder="请输入要查询的内容"></label>
+    <div>
+        <h1>排序</h1>
+        <button @click="up">工资升序</button>
+        <button @click="down">工资降序</button>
+        <button @click="origin">还原</button>
+    </div>
+    <div>
+        <ul>
+            <li v-for="(v,k) in objs">{{k + 1}}. {{v.name}} , {{v.age}}, {{v.sex}}, {{v.salary}}</li>
+        </ul>
+    </div>
+</div>
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                arr: ["我是vue对象提供的数据==1！", "我是vue对象提供的数据==2！", "我是vue对象提供的数据==3！", "我是vue对象提供的数据==4！", "我是vue对象提供的数据==5！", "我是vue对象提供的数据==6！"],
+                obj: {
+                    name: "我是vue对象",
+                    age: 18,
+                    sex: "man",
+                    salary: 4000
+                },
+                objs: [
+                    {name: "张三", age: 18, sex: "man", salary: 2800},
+                    {name: "李四", age: 22, sex: "man", salary: 3500},
+                    {name: "王五", age: 33, sex: "man", salary: 5500},
+                    {name: "赵六", age: 30, sex: "man", salary: 6500},
+                    {name: "周七", age: 32, sex: "man", salary: 4000},
+                    {name: "高八", age: 19, sex: "man", salary: 3000},
+                    {name: "郑九", age: 18, sex: "man", salary: 3500},
+                    {name: "钱十", age: 25, sex: "woman", salary: 4500},
+                    {name: "章斯克", age: 24, sex: "man", salary: 4000},
+                    {name: "李益达", age: 28, sex: "man", salary: 6600},
+                    {name: "龙傲天", age: 30, sex: "woman", salary: 8000},
+                    {name: "叶良辰", age: 32, sex: "man", salary: 7000},
+                    {name: "马斯", age: 33, sex: "woman", salary: 3500},
+                    {name: "唐三藏", age: 39, sex: "woman", salary: 6000},
+                    {name: "孙悟空", age: 42, sex: "man", salary: 5000},
+                    {name: "猪八戒", age: 46, sex: "man", salary: 10000},
+                    {name: "猪八", age: 30, sex: "man", salary: 5000},
+                    {name: "沙悟净", age: 27, sex: "woman", salary: 14000}
+                ],
+                upObj: [
+                    {name: "张三", age: 18, sex: "man", salary: 2800},
+                    {name: "李四", age: 22, sex: "man", salary: 3500},
+                    {name: "王五", age: 33, sex: "man", salary: 5500},
+                    {name: "赵六", age: 30, sex: "man", salary: 6500},
+                    {name: "周七", age: 32, sex: "man", salary: 4000},
+                    {name: "高八", age: 19, sex: "man", salary: 3000},
+                    {name: "郑九", age: 18, sex: "man", salary: 3500},
+                    {name: "钱十", age: 25, sex: "woman", salary: 4500},
+                    {name: "章斯克", age: 24, sex: "man", salary: 4000},
+                    {name: "李益达", age: 28, sex: "man", salary: 6600},
+                    {name: "龙傲天", age: 30, sex: "woman", salary: 8000},
+                    {name: "叶良辰", age: 32, sex: "man", salary: 7000},
+                    {name: "马斯", age: 33, sex: "woman", salary: 3500},
+                    {name: "唐三藏", age: 39, sex: "woman", salary: 6000},
+                    {name: "孙悟空", age: 42, sex: "man", salary: 5000},
+                    {name: "猪八戒", age: 46, sex: "man", salary: 10000},
+                    {name: "猪八", age: 30, sex: "man", salary: 5000},
+                    {name: "沙悟净", age: 27, sex: "woman", salary: 14000}
+                ]
+            }
+        },
+        methods: {
+            up() {
+                let tmp = this.objs
+                // 冒泡排序
+                for (let i = 0; i < tmp.length - 1; i++) {
+                    for (let j = 0; j < tmp.length - 1 - i; j++) {
+                        if (tmp[j].salary > tmp[j + 1].salary) {
+                            let t = tmp[j]
+                            tmp[j] = tmp[j + 1]
+                            tmp[j + 1] = t
+                        }
+                    }
+                }
+                this.objs = tmp
+            },
+            down() {
+                // 选择排序
+                for (let i = 0; i < this.objs.length - 1; i++) {
+                    let tmp = i
+                    for (let j = i + 1; j < this.objs.length; j++) {
+                        if (this.objs[tmp].salary < this.objs[j].salary) {
+                            let t = this.objs[tmp]
+                            this.objs[tmp] = this.objs[j]
+                            this.objs[j] = t
+                        }
+                    }
+                }
+            },
+            origin() {
+
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+</body>
+</html>

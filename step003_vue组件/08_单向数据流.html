@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0
+        }
+    </style>
+</head>
+<body>
+<!--
+单向数据流是基于组件间数据传递来说的，各组件的数据只在自己的对象作用域有效。组件间数据通信只能单向修改传递，而不能反向将传来的数据修改。
+props中的数据要先于data函数中的数据渲染，故可在data函数中进行this.[props]取值(两者渲染作用域不同)。
+-->
+<div id="root">
+    <h1>原始数据：{{price}}</h1>
+    <fuck :content="price"></fuck>
+    <fuck1 :content="price"></fuck1>
+</div>
+
+<template id="fid">
+    <hr>
+    <h1>传递数据：{{content}}</h1>
+    <button @click="content++">+</button>
+    <hr>
+</template>
+
+<template id="fid1">
+    <hr>
+    <h1>传递数据：{{myContent}}</h1>
+    <button @click="res">+</button>
+    <hr>
+</template>
+
+<script>
+    // 创建vue实例的全局配置对象
+    const OBJ = {
+        data() {
+            return {
+                price: 100
+            }
+        },
+        components: {
+            'fuck': {
+                template: `#fid`,
+                props: {
+                    content: {type: Number, required: true}
+                }
+            },
+            'fuck1': {
+                template: `#fid1`,
+                props: {
+                    content: {type: Number, required: true}
+                },
+                data() {
+                    return {
+                        myContent: this.content
+                    }
+                },
+                methods:{
+                    res(){
+                        this.myContent++
+                    }
+                }
+            }
+        }
+
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(OBJ).mount("#root")
+</script>
+
+</body>
+</html>

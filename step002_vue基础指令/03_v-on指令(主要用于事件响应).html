@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+</head>
+<body>
+
+<div id="root">
+    {{msg}}
+    <div>
+        <button v-on:click="sub">-</button>
+        <button @click="add">+</button>
+    </div>
+</div>
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                msg: 0
+            }
+        },
+        methods: {
+            sub() {
+                this.msg--
+            },
+            add() {
+                this.msg++
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+</body>
+</html>
