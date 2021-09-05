@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+</head>
+<body>
+
+
+<style>
+    body,
+    div {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<template id="rootTemplate">
+    {{msg}}
+</template>
+
+<div id="root" style="background-color: #42b983"></div>
+<div id="root1" style="background-color: #4268b9;float: left"></div>
+<div id="root2" style="background-color: #b9a542;float: left"></div>
+
+<!--
+一个vue对象可以被划分为多个组件对象component，
+这样的显著优点组件使得代码复用性更强，
+但在网页层面上来讲，
+如何尽可能复用多个vue对象，
+减少开发的代码量呢？
+mixin的设计就使得多个vue对象之间可以混用各自对象中的一些代码甚至整个对象中的代码，
+达到了vue对象复用的目的。
+-->
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        template: '#rootTemplate',
+        data() {
+            return {
+                msg: "我是vue对象提供的数据！"
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+    // 这种写法只是将配置对象在形式上抽离成共用对象，虽然也达到了复用代码的效果，但这不是mixin
+    // const app1 = Vue.createApp(obj).mount('#root1')
+    // mixin示例1
+    const mixin2 = {
+        data() {
+            return {
+                msg: "我是vue对象提供的数据！"
+            }
+        }
+    }
+    // 创建一个新的vue实例的全局配置对象，它缺失data配置函数，使用mixins进行混用其他vue对象的数据
+    const obj2 = {
+        template: `
+          <h1>{{ msg }}</h1>
+          <button @click="hello">vue3</button>
+        `,
+        mixins: [mixin2],
+        methods: {
+            hello() {
+                this.msg = "change"
+            }
+        }
+    }
+    const app2 = Vue.createApp(obj2).mount("#root1")
+
+</script>
+
+
+</body>
+
+
+</html>

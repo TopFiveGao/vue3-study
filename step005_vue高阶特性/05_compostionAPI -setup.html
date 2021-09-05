@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+</head>
+<body>
+
+<div id="root" class="root"></div>
+
+<style>
+    body,
+    h1,
+    div {
+        margin: 0;
+        padding: 0;
+    }
+
+    .root {
+        width: 100%;
+        height: 100%;
+        background-color: #1c8da8;
+    }
+
+</style>
+
+<!--
+从开始到现在，
+所有vue对象都是基于options API的模式来写的，
+即为业务配置相应的
+data、
+methods、
+computed、
+components、
+directives
+等选项来完成业务逻辑，
+设计者发现这种模式在页面很复杂，
+业务量巨大的情况下，
+要针对页面中某一逻辑进行更改时，
+代码维护将变得困难，
+所以提出了以单一业务为中心，
+将data、methods、computed等选项在指定【函数】中进行组合来设计vue的API，
+那么业务更改时，
+代码的维护将变得容易。
+于是，composition API诞生了！
+-->
+
+<template id="rootTemplate">
+    <h1>{{msg}}</h1>
+    <h2>姓名：{{obj.name}}</h2>
+    <h2>年龄：{{obj.age}}</h2>
+    <h2>性别：{{obj.gender}}</h2>
+    <father></father>
+</template>
+
+<template id="fatherTemplate">
+    <div style="width: 100%;height: 100%;background-color: blue">
+        <h1>{{msg}}</h1>
+        <h2>姓名：{{obj.name}}</h2>
+        <h2>年龄：{{obj.age}}</h2>
+        <h2>性别：{{obj.gender}}</h2>
+        <son></son>
+    </div>
+</template>
+
+<template id="sonTemplate">
+    <div style="width: 200px;height: 100%;background-color: red">
+        <h1>{{msg}}</h1>
+        <h2>姓名：{{obj.name}}</h2>
+        <h2>年龄：{{obj.age}}</h2>
+        <h2>性别：{{obj.gender}}</h2>
+    </div>
+</template>
+
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        template: '#rootTemplate',
+        setup(props, context) {
+            const {ref, reactive, provide, readonly} = Vue
+            let msg = ref("show")
+            let obj = readonly({name: "边扶侠", age: 18, gender: '男'})
+            provide('msg', readonly(msg))
+            provide('obj', obj)
+            return {
+                msg,
+                obj
+            }
+        },
+        components: {
+            father: {
+                template: '#fatherTemplate',
+                setup(props, context) {
+                    const {ref, reactive} = Vue
+                    let msg = ref("father")
+                    let obj = reactive({name: "边", age: 0, gender: '男'})
+                    return {
+                        msg,
+                        obj
+                    }
+                },
+                components: {
+                    son: {
+                        template: '#sonTemplate',
+                        setup(props, context) {
+                            const {reactive, inject, readonly} = Vue
+                            let msg = inject('msg')
+                            let obj = readonly(inject('obj'))
+                            // let obj = reactive({name: "边扶", age: 10, gender: '男'})
+                            setTimeout(() => {
+                                msg.value = 'son'
+                                console.log('change')
+                            }, 2000)
+                            return {
+                                msg,
+                                obj
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+
+
+</script>
+
+
+</body>
+
+
+</html>

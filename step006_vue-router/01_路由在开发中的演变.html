@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../step001_快速构建vue项目/js/vue.js"></script>
+</head>
+<body>
+<!--
+路由：通过网络把【信息】从【源地址】【传输】到【目标地址】的活动。
+
+路由在web开发中的演变：
+
+1.后端开发时代：
+从客户端（browser）发起的每一次网络请求，
+都是从服务端返回完整的页面（即【后端渲染】）并交给客户端进行展示，
+后端应用相应的后端技术（如asp、jsp等）进行页面改造并进行前、后联调以完成数据的交互，
+这样加大了后端开发和服务器的工作量，在一定条件下，开发效率和用户体验不好。
+
+2.前后端分离时代：
+前后端分离技术的出现解决了客户端（browser）页面都需交给后端重新改造和前、后联调的痛点，
+所有页面都可以通过前端技术在客户端由【前端渲染】完成，
+废弃了后端通过jsp等技术方式来渲染页面并返回给客户端的模式，
+奠定了服务端只提供数据接口给前端，
+然后由前端负责页面渲染和展示的开发模式（即前后端分离）。
+
+3.前端路由：
+前后端分离技术提高了开发效率，
+但客户端依然会发起多次页面请求（因为一个网站由多个页面组成），
+每个页面都会有相应的数据接口请求，
+这样的前后端分离架构好像还没达到极致体验。
+所以SPA单页面应用技术出现了，
+整个站点只有一个网页，
+客户端请求时一次性把整个网页请求下来，
+然后由客户端去找前端路由系统，
+实现不同页面的跳转。
+-->
+<div id="root">
+    {{msg}}
+</div>
+<script>
+    // 创建vue实例的全局配置对象
+    const obj = {
+        data() {
+            return {
+                msg: "vue对象数据！"
+            }
+        }
+    }
+    // 创建vue实例对象
+    const app = Vue.createApp(obj).mount("#root")
+</script>
+
+
+
+</body>
+
+
+</html>
